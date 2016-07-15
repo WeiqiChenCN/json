@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 2.8.4)
 
 project(json)
 
@@ -72,8 +72,8 @@ set_source_files_properties(${FLEX_OUTPUT} PROPERTIES COMPILE_FLAGS "-Wno-deprec
 endif(FLEX_FOUND)
 
 add_library(json json_st.cc ${BISON_OUTPUT} ${FLEX_OUTPUT})
-add_executable(test test.cc)
-target_link_libraries(test json)
+add_executable(test_json test.cc)
+target_link_libraries(test_json json)
 
 
 option(WITH_UNIT_TESTS "build unit tests, requires cppunit framework")
