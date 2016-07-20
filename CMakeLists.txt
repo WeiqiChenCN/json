@@ -71,6 +71,8 @@ set_source_files_properties(${FLEX_OUTPUT} PROPERTIES COMPILE_FLAGS "-Wno-deprec
 endif(FLEX_FOUND)
 
 add_library(json json_st.cc ${BISON_OUTPUT} ${FLEX_OUTPUT})
+add_library(json_shared SHARED json_st.cc ${BISON_OUTPUT} ${FLEX_OUTPUT})
+set_target_properties(json_shared PROPERTIES OUTPUT_NAME json)
 add_executable(test_json test.cc)
 target_link_libraries(test_json json)
 
