@@ -162,45 +162,50 @@ namespace {
 
 }
 
-JSON::Value parse_file(const char* filename)
-{    
-    FileHandle fh { filename };
-    JSON::Value v;
-    
-    load_file(fh);
-    int status = yyparse();
-    
-    if (status)
-        throw std::runtime_error("Error parsing file: JSON syntax.");
-    else
-        v = *parsd;
-    
-    delete parsd;
+namespace JSON {
 
-    return v;
-}
-
-JSON::Value parse_string(const std::string& s)
-{
-    void * buffer_state = load_string(s.c_str());
-    
-    int status = yyparse();
-    
-    if (status)
-    {
-        throw std::runtime_error("Error parsing string: JSON syntax.");
+    JSON::Value parse_file(const char* filename)
+    {    
+        FileHandle fh { filename };
+        JSON::Value v;
+        
+        load_file(fh);
+        int status = yyparse();
+        
+        if (status)
+            throw std::runtime_error("Error parsing file: JSON syntax.");
+        else
+            v = *parsd;
+        
         delete parsd;
+    
+        return v;
     }
-    else
+    
+    JSON::Value parse_string(const std::string& s)
     {
-        JSON::Value v = *parsd;
-        delete parsd;
-        if (buffer_state) clean_up(buffer_state);
-        return v;    
+        void * buffer_state = load_string(s.c_str());
+        
+        int status = yyparse();
+        
+        if (status)
+        {
+            throw std::runtime_error("Error parsing string: JSON syntax.");
+            delete parsd;
+        }
+        else
+        {
+            JSON::Value v = *parsd;
+            delete parsd;
+            if (buffer_state) clean_up(buffer_state);
+            return v;    
+        }
     }
-}
 
+}
 void yyerror(const char *s)
 {
     fprintf(stderr, "error: %s\n", s);
 }
+
+

@@ -3,8 +3,11 @@
 
 #include "json_st.hh" // JSON syntax tree
 #include "json.tab.hh" // parser
-  
-JSON::Value parse_file(const char* filename);
-JSON::Value parse_string(const std::string& s);
+ 
+namespace JSON{
 
+    JSON::Value parse_file(const char* filename);
+    JSON::Value parse_string(const std::string& s);
+
+}
 #endif
